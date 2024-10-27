@@ -115,10 +115,10 @@ func (l *RuleList) Trim() *RuleList {
 	return l
 }
 
-func (l *RuleList) MinLenght(minLenght int) *RuleList {
+func (l *RuleList) MinLength(minLenght int) *RuleList {
 	l.Rules = append(l.Rules, func(key, value string) (string, error) {
 		if len(value) < minLenght {
-			return value, fmt.Errorf("min lenght must be %d", minLenght)
+			return value, fmt.Errorf("min length must be %d", minLenght)
 		}
 
 		return value, nil
@@ -127,7 +127,7 @@ func (l *RuleList) MinLenght(minLenght int) *RuleList {
 	return l
 }
 
-func (l *RuleList) MaxLenght(maxLenght int) *RuleList {
+func (l *RuleList) MaxLength(maxLenght int) *RuleList {
 	l.Rules = append(l.Rules, func(key, value string) (string, error) {
 		if len(value) > maxLenght {
 			return value, fmt.Errorf("max length must be %d", maxLenght)
