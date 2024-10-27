@@ -43,7 +43,7 @@ func (l *RuleList) Add(rule ValidationRule) *RuleList {
 func (l *RuleList) Required() *RuleList {
 	l.Rules = append(l.Rules, func(key, value string) (string, error) {
 		if strings.Trim(value, "") == "" {
-			return value, errors.New("This field is required.")
+			return value, errors.New("this field is required")
 		}
 
 		return value, nil
@@ -57,7 +57,7 @@ func (l *RuleList) Email() *RuleList {
 		_, err := mail.ParseAddress(value)
 
 		if err != nil {
-			return value, errors.New("Must be a valid email address.")
+			return value, errors.New("must be a valid email address")
 		}
 
 		return value, nil
@@ -71,7 +71,7 @@ func (l *RuleList) Number() *RuleList {
 		_, err := strconv.ParseFloat(value, 64)
 
 		if err != nil {
-			return value, errors.New("Must be a valid number.")
+			return value, errors.New("must be a valid number")
 		}
 
 		return value, nil
@@ -85,7 +85,7 @@ func (l *RuleList) MinValue(minValue float64) *RuleList {
 		val, err := strconv.ParseFloat(value, 64)
 
 		if err != nil || val < minValue {
-			return value, errors.New(fmt.Sprintf("Min value must be %.2f.", minValue))
+			return value, fmt.Errorf("min value must be %.2f", minValue)
 		}
 
 		return value, nil
@@ -99,7 +99,7 @@ func (l *RuleList) MaxValue(maxValue float64) *RuleList {
 		val, err := strconv.ParseFloat(value, 64)
 
 		if err != nil || val > maxValue {
-			return value, errors.New(fmt.Sprintf("Max value must be %.2f.", maxValue))
+			return value, fmt.Errorf("max value must be %.2f", maxValue)
 		}
 
 		return value, nil
@@ -118,7 +118,7 @@ func (l *RuleList) Trim() *RuleList {
 func (l *RuleList) MinLenght(minLenght int) *RuleList {
 	l.Rules = append(l.Rules, func(key, value string) (string, error) {
 		if len(value) < minLenght {
-			return value, errors.New(fmt.Sprintf("Min lenght must be %d.", minLenght))
+			return value, fmt.Errorf("min lenght must be %d", minLenght)
 		}
 
 		return value, nil
@@ -130,7 +130,7 @@ func (l *RuleList) MinLenght(minLenght int) *RuleList {
 func (l *RuleList) MaxLenght(maxLenght int) *RuleList {
 	l.Rules = append(l.Rules, func(key, value string) (string, error) {
 		if len(value) > maxLenght {
-			return value, errors.New(fmt.Sprintf("Max lenght must be %d.", maxLenght))
+			return value, fmt.Errorf("max length must be %d", maxLenght)
 		}
 
 		return value, nil
