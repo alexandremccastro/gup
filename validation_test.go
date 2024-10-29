@@ -20,7 +20,7 @@ func TestValidationWithInvalidData(t *testing.T) {
 		PasswordValidation: "hardpassword",
 	}
 
-	registerValidator := NewValidator[UserRegistration](map[string]*RuleList{
+	registerValidator := NewValidation[UserRegistration](map[string]*RuleList{
 		"name":               R().Required().Trim().MinLength(2).MaxLength(100),
 		"email":              R().Required().Email(),
 		"password":           R().Required().MinLength(8),
@@ -66,7 +66,7 @@ func TestValidationWithValidData(t *testing.T) {
 		PasswordValidation: "easypassword",
 	}
 
-	registerValidator := NewValidator[UserRegistration](map[string]*RuleList{
+	registerValidator := NewValidation[UserRegistration](map[string]*RuleList{
 		"name":               R().Required().Trim().MinLength(2).MaxLength(100),
 		"email":              R().Required().Email(),
 		"password":           R().Required().MinLength(8),
