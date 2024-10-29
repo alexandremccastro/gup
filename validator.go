@@ -16,7 +16,7 @@ func NewValidator[T interface{}](fields map[string]*RuleList) *validator[T] {
 	return &validator[T]{fields: fields, errors: map[string][]string{}, values: map[string]interface{}{}}
 }
 
-func (v *validator[T]) GetErrors() []byte {
+func (v *validator[T]) ToJSON() []byte {
 	jsonb, err := json.Marshal(v.errors)
 
 	if err != nil {
@@ -26,25 +26,29 @@ func (v *validator[T]) GetErrors() []byte {
 	return jsonb
 }
 
-func (v *validator[T]) GetValues() map[string]interface{} {
-	return v.values
+func (validator *validator[T]) GetErrors() map[string][]string {
+	return validator.errors
 }
 
-func (v *validator[T]) Validate(object *T) bool {
+func (validator *validator[T]) GetValues() map[string]interface{} {
+	return validator.values
+}
+
+func (validator *validator[T]) Validate(object *T) bool {
 	var hasErrors bool
 
-	for key, rules := range v.fields {
+	for key := range validator.fields {
+		validator.values[key] = reflect.ValueOf(object).Elem().FieldByName(strings.Title(key)).Interface()
+	}
 
-		value := reflect.ValueOf(object).Elem().FieldByName(strings.Title(key))
-
-		parsedValue, errors := rules.Execute(key, value.String())
+	for key, rules := range validator.fields {
+		rules.UseValues(&validator.values)
+		parsedValue, errors := rules.Execute(key, validator.values[key])
+		validator.values[key] = parsedValue
 
 		if len(errors) > 0 {
 			hasErrors = true
-			v.errors[key] = errors
-		} else {
-			v.values[key] = parsedValue
-			value.Set(reflect.ValueOf(parsedValue))
+			validator.errors[key] = errors
 		}
 	}
 
