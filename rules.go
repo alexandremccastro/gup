@@ -43,7 +43,7 @@ func (ruleList *RuleList) Execute(key string, value interface{}) (interface{}, [
 	return parsedValue, errors
 }
 
-func (ruleList *RuleList) Add(rule ValidationRule) *RuleList {
+func (ruleList *RuleList) Custom(rule ValidationRule) *RuleList {
 	ruleList.Rules = append(ruleList.Rules, rule)
 	return ruleList
 }
